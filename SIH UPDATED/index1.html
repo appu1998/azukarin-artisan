@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+    <script>
+        function startPrintProcess() {
+            html2canvas(document.getElementById('print'), {
+                onrendered: function (canvasObj) {
+                    var pdf = new jsPDF('l', 'pt', 'a4'),
+                        pdfConf = {
+                            pagesplit: false,
+                            backgroundColor: '#FFF'
+                        };
+                    document.body.appendChild(canvasObj); //appendChild is required for html to add page in pdf
+                    pdf.addHTML(canvasObj, 0, 0, pdfConf, function () {
+                        document.body.removeChild(canvasObj);
+                        //pdf.addPage();
+                        pdf.save('Invoice.pdf');
+                    });
+                }
+            });
+        }
+</script>
+    <style>
+    .invoice-box {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #4b484f;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+        font-size: 16px;
+        line-height: 24px;
+        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        color:#e6e17c;
+        background-color: #1e1b2a;
+    }
+    
+    .invoice-box table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
+    }
+    
+    .invoice-box table td {
+        padding: 5px;
+        vertical-align: top;
+    }
+    
+    .invoice-box table tr td:nth-child(2) {
+        text-align: left;
+    }
+    
+    .invoice-box table tr.top table td {
+        padding-bottom: 20px;
+    }
+    
+    .invoice-box table tr.top table td.title {
+        font-size: 45px;
+        line-height: 45px;
+        color: #4b484f;
+    }
+    
+    .invoice-box table tr.information table td {
+        padding-bottom: 40px;
+        text-align: left;
+    }
+    
+    .invoice-box table tr.heading td {
+        background: #4b484f;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+    }
+    
+    .invoice-box table tr.details td {
+        padding-bottom: 20px;
+    }
+    
+    .invoice-box table tr.item td{
+        border-bottom: 1px solid #4b484f;
+    }
+    
+    .invoice-box table tr.item.last td {
+        border-bottom: none;
+    }
+    
+    .invoice-box table tr.total td:nth-child(2) {
+        border-top: 2px solid #4b484f;
+        font-weight: bold;
+    }
+    
+    @media only screen and (max-width: 600px) {
+        .invoice-box table tr.top table td {
+            width: 100%;
+            display: block;
+            text-align: right;
+        }
+        
+        .invoice-box table tr.information table td {
+            width: 100%;
+            display: block;
+            text-align: right;
+        }
+    }
+    
+    /** RTL **/
+    .rtl {
+        direction: rtl;
+        font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+    
+    .rtl table {
+        text-align: right;
+    }
+    
+    .rtl table tr td:nth-child(2) {
+        text-align: right;
+    }
+
+	.generate {
+		  background-color: #1e1b2a;
+		  border: none;
+		  color: white;
+		  padding: 15px 32px;
+		  text-align: center;
+		  text-decoration: none;
+		  display: inline-block;
+		  font-size: 16px;
+		}
+    </style>
+
+</head>
+
+<body id='create' style="background-color: #4b484f;">
+    <div class="invoice-box" id='print'>
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <img src="shilpakar logo.png" style="width:100%; max-width:300px;"> 
+                            </td>
+                            
+                            <td style="text-align: right; padding-top: 33px">
+                                Invoice #: 123<br>
+                                Date : May 2, 2019
+                          
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            
+                            
+                            <td>
+                                Team Azukarin<br>
+                                teamazukarin@gmail.com                           
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="heading">
+                <td>
+                    Item
+                </td>
+
+                <td>
+                	Artisan
+                </td>
+                
+                <td>
+                    Price
+                </td>
+            </tr>
+            
+            <tr class="item">
+                <td>
+                    Website design
+                </td>
+                <td>
+                	Artist 1
+                </td>
+                
+                <td>
+                    $300.00
+                </td>
+            </tr>
+            
+            
+            <tr class="total">
+                <td></td>
+                <td></td>
+                <td>
+                   Total: $200.00
+                </td>
+            </tr>
+            
+        </table>
+        <div class='details' id='details' style="padding-top: 50px;text-align: right;">
+            <p>Customer Details</p>
+            <p>Name: John Doe<br>
+            Email id: johndoe@example.com</p></div>
+       
+    </div>
+    <div id='button' style="padding-left: 137px; padding-top: 10px">
+     <button class='noprint' alt='print' id='print-btn' onclick='startPrintProcess()' style=" 
+     	background-color: #1e1b2a;
+		  border: none;
+		  color: white;
+		  padding: 15px 32px;
+		  text-align: center;
+		  text-decoration: none;
+		  display: inline-block;
+		  font-size: 16px;" >Start print process</button>
+ </div>
+</body>
+</html>
